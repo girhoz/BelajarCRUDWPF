@@ -15,14 +15,18 @@ namespace BelajarCRUDWPF.Model
         public int Id { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
+        public string Email { get; set; }
+
         public Supplier()
         {
 
         }
-        public Supplier(String name, String address)
+        public Supplier(string name, string address, string email)
         {
             this.Name = name;
             this.Address = address;
+            this.Email = email;
         }
+
     }
 }

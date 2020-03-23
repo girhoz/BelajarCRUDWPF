@@ -5,8 +5,168 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BelajarCRUDWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="MainWindow" Height="500" Width="800"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
-        
+        <TabControl x:Name="Menu" HorizontalAlignment="Left" Height="473" Margin="0,-2,0,0" VerticalAlignment="Top" Width="794" TabStripPlacement="Left" SelectionChanged="Menu_SelectionChanged" BorderBrush="Gainsboro">
+            <TabControl.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#00B55D"/>
+                    <GradientStop Color="#00B5B5" Offset="1"/>
+                    <GradientStop Color="#005DB5" Offset="0.8"/>
+                </LinearGradientBrush>
+            </TabControl.Background>
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabItem">
+                                <Border Name="Border" BorderThickness="1,1,1,1" BorderBrush="Gainsboro" CornerRadius="0,4,4,0">
+                                    <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="10,2"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="#00B55D" />
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter TargetName="Border" Property="Background" Value="#E6E9EA"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabControl.Resources>
+            <TabItem Header="Supplier" Width="70" Height="40">
+                <Grid Margin="0,0,-3,-11">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="31*"/>
+                        <ColumnDefinition Width="83*"/>
+                        <ColumnDefinition Width="396*"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="Images/mii.png" Width="70" Height="70" Margin="-75,85,49,323" />
+                    <Button Name="LogOut" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="30" Margin="519,-4,9,452" Background="{x:Null}" BorderBrush="{x:Null}" Click="LogOut_Click" Grid.Column="2">
+                        <materialDesign:PackIcon Kind="Power" Width="30" Height="30"/>
+                    </Button>
+                    <Label Content="Id" HorizontalAlignment="Left" Margin="25,20,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                    <Label Content="Name" HorizontalAlignment="Left" Margin="25,70,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                    <Label Content="Address" HorizontalAlignment="Left" Margin="25,120,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.1,3.577" Grid.ColumnSpan="2"/>
+                    <Label Content="Email" HorizontalAlignment="Left" Margin="25,170,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.1,3.577" Grid.ColumnSpan="2"/>
+                    <DataGrid x:Name="TB_M_Supplier" HorizontalAlignment="Left" Height="222" Margin="-1,246,0,0" VerticalAlignment="Top" Width="719" SelectionChanged="TB_M_Supplier_SelectionChanged" AutoGenerateColumns="False" Grid.ColumnSpan="3">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="100" />
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="200"/>
+                            <DataGridTextColumn Header="Address" Binding="{Binding Address}" Width="170"/>
+                            <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="230"/>
+                        </DataGrid.Columns>
+                        <DataGrid.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="White"/>
+                                <GradientStop Color="White" Offset="2"/>
+                                <GradientStop Color="Gray" Offset="0.8"/>
+                            </LinearGradientBrush>
+                        </DataGrid.Background>
+                    </DataGrid>
+                    <TextBox x:Name="Tbx_Id" HorizontalAlignment="Left" Height="30" Margin="58,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="290" PreviewTextInput="Tbx_Id_PreviewTextInput" IsEnabled="False" Grid.Column="1" Grid.ColumnSpan="2"/>
+                    <TextBox x:Name="Tbx_Name" HorizontalAlignment="Left" Height="30" Margin="58,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="290" PreviewTextInput="Tbx_Name_PreviewTextInput" Grid.Column="1" Grid.ColumnSpan="2"/>
+                    <TextBox x:Name="Tbx_Address" HorizontalAlignment="Left" Height="30" Margin="58,120,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="290" TextChanged="TextBox_TextChanged" PreviewTextInput="Tbx_Address_PreviewTextInput" Grid.Column="1" Grid.ColumnSpan="2"/>
+                    <TextBox x:Name="Tbx_Email" HorizontalAlignment="Left" Height="30" Margin="58,170,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="290" TextChanged="TextBox_TextChanged" PreviewTextInput="Tbx_Email_PreviewTextInput" Grid.Column="1" Grid.ColumnSpan="2"/>
+                    <Button x:Name="Btn_Update" Content="Update" HorizontalAlignment="Left" Margin="390,100,0,0" VerticalAlignment="Top" Width="120" Click="Btn_Update_Click" Height="40" Grid.Column="2">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="White"/>
+                                <GradientStop Color="#00B5B5" Offset="1"/>
+                                <GradientStop Color="#005DB5" Offset="0.5"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button x:Name="Btn_Delete" Content="Delete" HorizontalAlignment="Left" Margin="390,180,0,0" VerticalAlignment="Top" Width="120" Click="Btn_Delete_Click" Height="40" Grid.Column="2">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="White"/>
+                                <GradientStop Color="#00B5B5" Offset="1"/>
+                                <GradientStop Color="#005DB5" Offset="0.5"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button x:Name="Btn_Insert" Content="Insert" HorizontalAlignment="Left" Margin="390,20,0,0" VerticalAlignment="Top" Width="120" Click="Btn_Insert_Click" Height="40" Grid.Column="2">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="White"/>
+                                <GradientStop Color="#00B5B5" Offset="1"/>
+                                <GradientStop Color="#005DB5" Offset="0.5"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Item" Width="70" Height="40">
+                <Grid>
+                    <Image Source="Images/mii.png" Width="70" Height="70" Margin="-75,85,721,312" />
+                    <Button Name="LogOut2" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="30" Margin="680,-4,6,441" Background="{x:Null}" BorderBrush="{x:Null}" Click="LogOut2_Click">
+                        <materialDesign:PackIcon Kind="Power" Width="30" Height="30"/>
+                    </Button>
+                    <Label Content="Id" HorizontalAlignment="Left" Margin="25,20,0,0" VerticalAlignment="Top" Height="30"/>
+                    <Label Content="Name" HorizontalAlignment="Left" Margin="25,60,0,0" VerticalAlignment="Top" Height="45"/>
+                    <Label Content="Price" HorizontalAlignment="Left" Margin="25,100,0,0" VerticalAlignment="Top" Height="45"/>
+                    <Label Content="Stock" HorizontalAlignment="Left" Margin="25,140,0,0" VerticalAlignment="Top" Height="45"/>
+                    <Label Content="Supplier" HorizontalAlignment="Left" Margin="25,180,0,0" VerticalAlignment="Top" Height="38"/>
+                    <TextBox x:Name="Tbx_Id_Item" HorizontalAlignment="Left" Height="30" Margin="120,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="300" TextChanged="TextBox_TextChanged" IsEnabled="False" PreviewTextInput="Tbx_Id_Item_PreviewTextInput"/>
+                    <TextBox x:Name="Tbx_Name_Item" HorizontalAlignment="Left" Height="30" Margin="120,55,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="300" PreviewTextInput="Tbx_Name_Item_PreviewTextInput"/>
+                    <TextBox x:Name="Tbx_Price" HorizontalAlignment="Left" Height="30" Margin="120,95,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="300" PreviewTextInput="Tbx_Price_PreviewTextInput"/>
+                    <TextBox x:Name="Tbx_Stock" HorizontalAlignment="Left" Height="30" Margin="120,135,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="300" RenderTransformOrigin="0.005,0.694" PreviewTextInput="Tbx_Stock_PreviewTextInput"/>
+                    <ComboBox x:Name="Cb_Supplier" ItemsSource="{Binding Suppliers}" DisplayMemberPath="Name" SelectedValuePath="Id"  HorizontalAlignment="Left" Margin="120,175,0,0" VerticalAlignment="Top" Width="300" Height="30" SelectionChanged="Cb_Supplier_SelectionChanged"/>
+                    <Button x:Name="Btn_Insert_Item" Content="Insert" HorizontalAlignment="Left" Margin="550,20,0,0" VerticalAlignment="Top" Width="120" Click="Btn_Insert_Item_Click"  Height="40">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="White"/>
+                                <GradientStop Color="#00B5B5" Offset="1"/>
+                                <GradientStop Color="#005DB5" Offset="0.5"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button x:Name="Btn_Update_Item" Content="Update" HorizontalAlignment="Left" Margin="550,100,0,0" VerticalAlignment="Top" Width="120" Click="Btn_Update_Item_Click"  Height="40">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="White"/>
+                                <GradientStop Color="#00B5B5" Offset="1"/>
+                                <GradientStop Color="#005DB5" Offset="0.5"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button x:Name="Btn_Delete_Item" Content="Delete" HorizontalAlignment="Left" Margin="550,180,0,0" VerticalAlignment="Top" Width="120" Click="Btn_Delete_Item_Click"  Height="40">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="White"/>
+                                <GradientStop Color="#00B5B5" Offset="1"/>
+                                <GradientStop Color="#005DB5" Offset="0.5"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <DataGrid x:Name="TB_M_Item" HorizontalAlignment="Left" Height="222" Margin="-1,245,0,0" VerticalAlignment="Top" Width="716" SelectionChanged="TB_M_Item_SelectionChanged"  AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="80" />
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="160"/>
+                            <DataGridTextColumn Header="Price" Binding="{Binding Price}" Width="150"/>
+                            <DataGridTextColumn Header="Stock" Binding="{Binding Stock}" Width="100"/>
+                            <DataGridTextColumn Header="Supplier" Binding="{Binding Supplier.Name}" Width="140"/>
+                        </DataGrid.Columns>
+                        <DataGrid.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="White"/>
+                                <GradientStop Color="White" Offset="2"/>
+                                <GradientStop Color="Gray" Offset="0.8"/>
+                            </LinearGradientBrush>
+                        </DataGrid.Background>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+        </TabControl>
     </Grid>
 </Window>

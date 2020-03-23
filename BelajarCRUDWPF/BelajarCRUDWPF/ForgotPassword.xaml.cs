@@ -31,6 +31,7 @@ namespace BelajarCRUDWPF
             InitializeComponent();
         }
 
+        //Code for send password button
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var check_email = connection.Users.Where(S => S.Email == Tbx_Email.Text).FirstOrDefault(); //get the data first data from database which match the id

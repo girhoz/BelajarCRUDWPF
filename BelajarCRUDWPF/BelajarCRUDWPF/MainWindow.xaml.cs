@@ -41,6 +41,7 @@ namespace BelajarCRUDWPF
             Disable_Access();
         }
 
+        //Disable access to tab base on role
         private void Disable_Access()
         {
             var check_access = connection.Users.Where(S => S.Email == email).FirstOrDefault();
@@ -65,6 +66,7 @@ namespace BelajarCRUDWPF
 
         }
 
+        //Clearing all texbox in tab supplier
         private void Clear_Textbox_Supplier()
         {
             Tbx_Id.Clear();
@@ -73,6 +75,7 @@ namespace BelajarCRUDWPF
             Tbx_Email.Clear();
         }
 
+        //Sending password to email
         private void Send_Password(string email, string password)
         {
             MailMessage mm = new MailMessage("projectbootcamp35@gmail.com", email);
@@ -100,7 +103,7 @@ namespace BelajarCRUDWPF
             }
         }
 
-        // code for insert button
+        // code for insert button supplier
         private void Btn_Insert_Click(object sender, RoutedEventArgs e)
         {
             var check_exist = connection.Users.Where(S => S.Email == Tbx_Email.Text).FirstOrDefault();
@@ -156,7 +159,7 @@ namespace BelajarCRUDWPF
             Clear_Textbox_Supplier(); //Clear all text box
         }
 
-        // code for delete button
+        // code for delete button supplier
         private void Btn_Delete_Click(object sender, RoutedEventArgs e)
         {
             int Id = Convert.ToInt32(Tbx_Id.Text); //get id from textbox id and convert to int
@@ -175,7 +178,7 @@ namespace BelajarCRUDWPF
             Clear_Textbox_Supplier(); //Clear all textbox
         }
 
-        // code for update button
+        // code for update button supplier
         private void Btn_Update_Click(object sender, RoutedEventArgs e)
         {
             int Id = Convert.ToInt32(Tbx_Id.Text); //get id from textbox id and convert to int
@@ -216,7 +219,7 @@ namespace BelajarCRUDWPF
 
         }
 
-        //Code for datagrid
+        //Code for datagrid supplier
         private void TB_M_Supplier_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var data = TB_M_Supplier.SelectedItem; //get the data of the selected item
@@ -233,7 +236,7 @@ namespace BelajarCRUDWPF
             }
         }
 
-
+        //Clear all textbox in Item
         private void Clear_Textbox_Item()
         {
             Tbx_Id_Item.Clear();
@@ -243,11 +246,13 @@ namespace BelajarCRUDWPF
             Cb_Supplier.SelectedValue = null;
         }
 
+        //Code for combo box supplier in item
         private void Cb_Supplier_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             cb_sup = Convert.ToInt32(Cb_Supplier.SelectedValue.ToString()); // get the id from selected combo box
         }
 
+        //Code for insert button item
         private void Btn_Insert_Item_Click(object sender, RoutedEventArgs e)
         {
             var supplierdata = connection.Suppliers.Where(S => S.Id == cb_sup).FirstOrDefault(); //search the supplier data that match the supplier id
@@ -289,8 +294,8 @@ namespace BelajarCRUDWPF
             MessageBox.Show(success + " Data Successfully Inputted!");
             Clear_Textbox_Item(); //Clear all text box
         }
-        
 
+        //Code for update button item
         private void Btn_Update_Item_Click(object sender, RoutedEventArgs e)
         {
             int Id = Convert.ToInt32(Tbx_Id_Item.Text); //get id from textbox id and convert to int
@@ -331,6 +336,7 @@ namespace BelajarCRUDWPF
             Clear_Textbox_Item(); //Clear all text box
         }
 
+        //Code for delete button item
         private void Btn_Delete_Item_Click(object sender, RoutedEventArgs e)
         {
             int Id = Convert.ToInt32(Tbx_Id_Item.Text); //get id from textbox id and convert to int
@@ -374,6 +380,7 @@ namespace BelajarCRUDWPF
 
         }
 
+        //Code for datagrid item
         private void TB_M_Item_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var data = TB_M_Item.SelectedItem; //get the data of the selected item
@@ -412,6 +419,7 @@ namespace BelajarCRUDWPF
 
         }
 
+        //Code for logout button supplier
         private void LogOut_Click(object sender, RoutedEventArgs e)
         {
             Login login = new Login();
@@ -419,6 +427,7 @@ namespace BelajarCRUDWPF
             this.Close();
         }
 
+        //Code for button logout button item
         private void LogOut2_Click(object sender, RoutedEventArgs e)
         {
             Login login = new Login();

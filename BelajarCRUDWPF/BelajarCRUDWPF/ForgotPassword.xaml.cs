@@ -45,7 +45,7 @@ namespace BelajarCRUDWPF
             check_email.Password = password; // changes the password with new password
             connection.SaveChanges(); 
             MailMessage mm = new MailMessage("projectbootcamp35@gmail.com", check_email.Email);
-            string today = DateTime.Now.ToString("dd/MM/yyyy");
+            string today = DateTime.Now.ToString();
             mm.Subject = "Password Recovery (" + today + ")";
             mm.Body = string.Format("Hi {0},<br /><br />Your password has been changed to: <br />{1}<br /><br />Thank You.", check_email.Email, password);
             mm.IsBodyHtml = true;

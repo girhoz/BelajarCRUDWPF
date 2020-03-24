@@ -36,8 +36,8 @@ namespace BelajarCRUDWPF
             InitializeComponent();
             TB_M_Supplier.ItemsSource = connection.Suppliers.ToList(); // refresh datagrid supplier
             TB_M_Item.ItemsSource = connection.Items.ToList(); // refresh datagrid item
-            Cb_Supplier.ItemsSource = connection.Suppliers.ToList(); // refresh combo box
-            this.email = user_email;
+            Cb_Supplier.ItemsSource = connection.Suppliers.ToList(); // refresh combo box item
+            this.email = user_email; //email from login form
             Disable_Access();
         }
 
@@ -50,7 +50,7 @@ namespace BelajarCRUDWPF
                 var tab = Menu.Items[1] as TabItem;
                 tab.IsSelected = true;
                 tab = Menu.Items[0] as TabItem;
-                tab.IsEnabled = false;
+                tab.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -73,13 +73,14 @@ namespace BelajarCRUDWPF
             Tbx_Name.Clear();
             Tbx_Address.Clear();
             Tbx_Email.Clear();
+            Tbx_Search.Clear();
         }
 
         //Sending password to email
         private void Send_Password(string email, string password)
         {
             MailMessage mm = new MailMessage("projectbootcamp35@gmail.com", email);
-            string today = DateTime.Now.ToString("dd/MM/yyyy");
+            string today = DateTime.Now.ToString();
             mm.Subject = "Password New Account ("+today+")";
             mm.Body = string.Format("Hi {0},<br /><br />Your password for your account is: <br />{1}<br /><br />Thank You.", email, password);
             mm.IsBodyHtml = true;
@@ -103,8 +104,8 @@ namespace BelajarCRUDWPF
             }
         }
 
-        // code for insert button supplier
-        private void Btn_Insert_Click(object sender, RoutedEventArgs e)
+        // code for save button supplier
+        private void Btn_Save_Click(object sender, RoutedEventArgs e)
         {
             var check_exist = connection.Users.Where(S => S.Email == Tbx_Email.Text).FirstOrDefault();
             if (Tbx_Name.Text.Trim() == string.Empty) //if textbox name empty
@@ -112,7 +113,8 @@ namespace BelajarCRUDWPF
                 MessageBox.Show("Please fill supplier Name!");
                 Tbx_Name.Focus(); //Move cursor to text box Name
                 return; //nothing will happen
-            }else if (Tbx_Address.Text.Trim() == string.Empty) // if textbox address empty
+            }
+            else if (Tbx_Address.Text.Trim() == string.Empty) // if textbox address empty
             {
                 MessageBox.Show("Please fill supplier Address!");
                 Tbx_Address.Focus(); //Move cursor to text box Name
@@ -137,34 +139,63 @@ namespace BelajarCRUDWPF
                 Tbx_Email.Focus();
                 return;
             }
-            //Validation Exist
-            else if (check_exist != null)
+            // Update Code
+            if (Tbx_Id.Text != "")
             {
-                MessageBox.Show("Email already used!");
-                Tbx_Email.Focus();
-                return;
+                // Update Supplier
+                int Id = Convert.ToInt32(Tbx_Id.Text); //get id from textbox id and convert to int
+                var check_id = connection.Suppliers.Where(S => S.Id == Id).FirstOrDefault(); //get the data first data from database which match the id
+                check_id.Name = Tbx_Name.Text; //assign the name with value from textbox name
+                check_id.Address = Tbx_Address.Text; //assign the address with value from textbox address
+                check_id.Email = Tbx_Email.Text; //assign the email with value from textbox email
+                connection.SaveChanges(); //if not empty then update the database
+                // Update User
+                var checkEmail = connection.Suppliers.Where(S => S.Email == Tbx_Email.Text).FirstOrDefault();
+                var success = connection.SaveChanges();
+                MessageBox.Show(success + " Data Successfully Updated!");
             }
-
-            var input = new Supplier(Tbx_Name.Text, Tbx_Address.Text, Tbx_Email.Text); //get user input from textbox
-            connection.Suppliers.Add(input); // if not empty then add input
-            var success = connection.SaveChanges(); //update the database (add the input to database)
-            // Add User
-            var password = Guid.NewGuid().ToString(); //generate password with guid
-            var input2 = new User(Tbx_Email.Text, password, "member");
-            connection.Users.Add(input2);
-            connection.SaveChanges();
-            Send_Password(Tbx_Email.Text, password); //send password to email
-            TB_M_Supplier.ItemsSource = connection.Suppliers.ToList(); //refresh the datagrid 
-            MessageBox.Show(success + " Data Successfully Inputted & Password Has Been Sent to Email!");
+            // Insert Code
+            else
+            {
+                //Validation Exist
+                if (check_exist != null)
+                {
+                    MessageBox.Show("Email already used!");
+                    Tbx_Email.Focus();
+                    return;
+                }
+                // Add Supplier
+                var input = new Supplier(Tbx_Name.Text, Tbx_Address.Text, Tbx_Email.Text); //get user input from textbox
+                connection.Suppliers.Add(input); // if not empty then add input
+                connection.SaveChanges();
+                // Add User
+                var password = Guid.NewGuid().ToString(); //generate password with guid
+                var input2 = new User(Tbx_Email.Text, password, "member");
+                connection.Users.Add(input2);
+                var success = connection.SaveChanges();
+                Send_Password(Tbx_Email.Text, password); //send password to email
+                MessageBox.Show(success + " Data Successfully Inputted & Password Has Been Sent to Email!");
+            }
+            TB_M_Supplier.ItemsSource = connection.Suppliers.ToList(); //refresh the datagrid
+            Cb_Supplier.ItemsSource = connection.Suppliers.ToList(); // refresh combo box item
             Clear_Textbox_Supplier(); //Clear all text box
         }
 
         // code for delete button supplier
         private void Btn_Delete_Click(object sender, RoutedEventArgs e)
         {
+            if (Tbx_Id_Item.Text == "")
+            {
+                MessageBox.Show("Choose the Data!");
+                return;
+            }
             int Id = Convert.ToInt32(Tbx_Id.Text); //get id from textbox id and convert to int
+            //Delete the supplier
             var check_id = connection.Suppliers.Where(S => S.Id == Id).FirstOrDefault(); //get the data first data from database which match the id
             connection.Suppliers.Remove(check_id); //remove the data
+            //Delete the user
+            var checkUser = connection.Users.Where(S => S.Email == Tbx_Email.Text).FirstOrDefault();
+            connection.Users.Remove(checkUser);
             if (MessageBox.Show("Are you sure this data will be deleted?", "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes) //confirmation box
             {
                 var success = connection.SaveChanges(); //if yes, then update database
@@ -175,34 +206,10 @@ namespace BelajarCRUDWPF
                 return; //if no, nothing happen
             }           
             TB_M_Supplier.ItemsSource = connection.Suppliers.ToList(); //refresh datagrid
+            Cb_Supplier.ItemsSource = connection.Suppliers.ToList(); // refresh combo box item
             Clear_Textbox_Supplier(); //Clear all textbox
         }
 
-        // code for update button supplier
-        private void Btn_Update_Click(object sender, RoutedEventArgs e)
-        {
-            int Id = Convert.ToInt32(Tbx_Id.Text); //get id from textbox id and convert to int
-            var check_id = connection.Suppliers.Where(S => S.Id == Id).FirstOrDefault(); //get the data first data from database which match the id
-            if (Tbx_Name.Text.Trim() == string.Empty) //if textbox name empty
-            {
-                MessageBox.Show("Please fill supplier Name!");
-                Tbx_Name.Focus(); //Move cursor to text box Name
-                return; //nothing will happen
-            }
-            else if (Tbx_Address.Text.Trim() == string.Empty) // if textbox address empty
-            {
-                MessageBox.Show("Please fill supplier Address!");
-                Tbx_Address.Focus(); //Move cursor to text box Name
-                return; //nothing will happen
-            }
-            check_id.Name = Tbx_Name.Text; //assign the name with value from textbox name
-            check_id.Address = Tbx_Address.Text; //assign the address with value from textbox address
-            check_id.Email = Tbx_Email.Text;
-            var success = connection.SaveChanges(); //if not empty then update the database
-            TB_M_Supplier.ItemsSource = connection.Suppliers.ToList(); //refresh datagrid
-            MessageBox.Show(success + " Data Successfully Updated!");
-            Clear_Textbox_Supplier(); //Clear all textbox
-        }
 
         private void Tbx_Name_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -244,6 +251,7 @@ namespace BelajarCRUDWPF
             Tbx_Price.Clear();
             Tbx_Stock.Clear();
             Cb_Supplier.SelectedValue = null;
+            Tbx_Search2.Clear();
         }
 
         //Code for combo box supplier in item
@@ -252,11 +260,10 @@ namespace BelajarCRUDWPF
             cb_sup = Convert.ToInt32(Cb_Supplier.SelectedValue.ToString()); // get the id from selected combo box
         }
 
-        //Code for insert button item
-        private void Btn_Insert_Item_Click(object sender, RoutedEventArgs e)
+        //Code for save button item
+        private void Btn_Save_Item_Click(object sender, RoutedEventArgs e)
         {
             var supplierdata = connection.Suppliers.Where(S => S.Id == cb_sup).FirstOrDefault(); //search the supplier data that match the supplier id
-            var input = new Item(Tbx_Name_Item.Text, Convert.ToInt32(Tbx_Price.Text), Convert.ToInt32(Tbx_Stock.Text), supplierdata); //get user input from textbox
             if (Tbx_Name_Item.Text.Trim() == string.Empty) //if textbox name empty
             {
                 MessageBox.Show("Please fill item Name!");
@@ -287,58 +294,41 @@ namespace BelajarCRUDWPF
                 Tbx_Name_Item.Focus();
                 return;
             }
-            connection.Items.Add(input); // if not empty then add input
-            var success = connection.SaveChanges(); //update the database (add the input to database)
+            // Update Code
+            if (Tbx_Id_Item.Text != "")
+            {
+                int Id = Convert.ToInt32(Tbx_Id_Item.Text); //get id from textbox id and convert to int
+                var check_id = connection.Items.Where(S => S.Id == Id).FirstOrDefault(); //get the data first data from database which match the id
+                check_id.Name = Tbx_Name_Item.Text;
+                check_id.Price = Convert.ToInt32(Tbx_Price.Text);
+                check_id.Stock = Convert.ToInt32(Tbx_Stock.Text);
+                check_id.Supplier = supplierdata;
+                var success = connection.SaveChanges(); //update the database (add the input to database)
+                MessageBox.Show(success + " Data Successfully Updated!");
+            }
+            // Insert Code
+            else
+            {
+                var input = new Item(Tbx_Name_Item.Text, Convert.ToInt32(Tbx_Price.Text), Convert.ToInt32(Tbx_Stock.Text), supplierdata); //get user input from textbox
+                connection.Items.Add(input); // if not empty then add input
+                var success = connection.SaveChanges(); //update the database (add the input to database)
+                MessageBox.Show(success + " Data Successfully Inputted!");
+            }
+
             TB_M_Item.ItemsSource = connection.Items.ToList(); // refresh datagrid item
             Cb_Supplier.ItemsSource = connection.Suppliers.ToList(); //refresh 
-            MessageBox.Show(success + " Data Successfully Inputted!");
             Clear_Textbox_Item(); //Clear all text box
         }
 
-        //Code for update button item
-        private void Btn_Update_Item_Click(object sender, RoutedEventArgs e)
-        {
-            int Id = Convert.ToInt32(Tbx_Id_Item.Text); //get id from textbox id and convert to int
-            var check_id = connection.Items.Where(S => S.Id == Id).FirstOrDefault(); //get the data first data from database which match the id
-            var supplierdata = connection.Suppliers.Where(S => S.Id == cb_sup).FirstOrDefault(); //search the supplier data that match the supplier id
-            if (Tbx_Name_Item.Text.Trim() == string.Empty) //if textbox name empty
-            {
-                MessageBox.Show("Please fill your Name!");
-                Tbx_Name_Item.Focus(); //Move cursor to text box Name
-                return; //nothing will happen
-            }
-            else if (Tbx_Price.Text.Trim() == string.Empty) // if textbox Price empty
-            {
-                MessageBox.Show("Please fill item Price!");
-                Tbx_Price.Focus(); //Move cursor to text box Name
-                return; //nothing will happen
-            }
-            else if (Tbx_Stock.Text.Trim() == string.Empty) // if textbox Stock empty
-            {
-                MessageBox.Show("Please fill item Stock!");
-                Tbx_Stock.Focus(); //Move cursor to text box Name
-                return; //nothing will happen
-            }
-            else if (supplierdata == null)
-            {
-                MessageBox.Show("Please choose Supplier!");
-                Cb_Supplier.Focus(); //Move cursor to text box Name
-                return; //nothing will happen
-            }
-            check_id.Name = Tbx_Name_Item.Text;
-            check_id.Price = Convert.ToInt32(Tbx_Price.Text);
-            check_id.Stock = Convert.ToInt32(Tbx_Stock.Text);
-            check_id.Supplier = supplierdata;
-            var success = connection.SaveChanges(); //update the database (add the input to database)
-            TB_M_Item.ItemsSource = connection.Items.ToList(); // refresh datagrid item
-            Cb_Supplier.ItemsSource = connection.Suppliers.ToList(); //refresh 
-            MessageBox.Show(success + " Data Successfully Inputted!");
-            Clear_Textbox_Item(); //Clear all text box
-        }
 
         //Code for delete button item
         private void Btn_Delete_Item_Click(object sender, RoutedEventArgs e)
         {
+            if(Tbx_Id_Item.Text == "")
+            {
+                MessageBox.Show("Choose the Data!");
+                return;
+            }
             int Id = Convert.ToInt32(Tbx_Id_Item.Text); //get id from textbox id and convert to int
             var check_id = connection.Items.Where(S => S.Id == Id).FirstOrDefault(); //get the data first data from database which match the id
             connection.Items.Remove(check_id); //remove the data
@@ -434,5 +424,108 @@ namespace BelajarCRUDWPF
             login.Show();
             this.Close();
         }
+
+        //Code for refresh textbox Item
+        private void Refresh2_Click(object sender, RoutedEventArgs e)
+        {
+            Clear_Textbox_Item();
+        }
+
+        //Code for refresh textbox supplier
+        private void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+
+            Clear_Textbox_Supplier();
+        }
+
+        private void Tbx_Search_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+
+        }
+
+        //Code for search data supplier
+        private void Btn_Search_Click(object sender, RoutedEventArgs e)
+        {
+            List<Supplier> filterModelSupplier = new List<Supplier>();
+            int parsedValue;
+            if (Tbx_Search.Text == "")
+            {
+                TB_M_Supplier.ItemsSource = connection.Suppliers.ToList();
+            }
+            else
+            {
+                foreach (Supplier supp in connection.Suppliers.ToList()) //iteration for every data in supplier
+                {
+                    if (supp.Name.ToLower().Contains(Tbx_Search.Text.ToLower()))
+                    {
+                        filterModelSupplier.Add(supp);
+                    }
+                    else if (int.TryParse(Tbx_Search.Text, out parsedValue)) // check if the textbox input is number only
+                    {
+                        if  (supp.Id.Equals(Convert.ToInt32(Tbx_Search.Text))) 
+                        {
+                            filterModelSupplier.Add(supp);
+                        }
+                    }
+                    else if (supp.Address.ToLower().Contains(Tbx_Search.Text.ToLower()))
+                    {
+                        filterModelSupplier.Add(supp);
+                    }
+                    else if (supp.Email.ToLower().Contains(Tbx_Search.Text.ToLower()))
+                    {
+                        filterModelSupplier.Add(supp);
+                    }
+                }
+                TB_M_Supplier.ItemsSource = filterModelSupplier.ToList();
+            }
+        }
+
+        private void Tbx_Search2_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+
+        }
+
+        //Code for search data item
+        private void Btn_Search2_Click(object sender, RoutedEventArgs e)
+        {
+            List<Item> filterModelItem = new List<Item>();
+            int parsedValue;
+            if (Tbx_Search2.Text == "")
+            {
+                TB_M_Item.ItemsSource = connection.Items.ToList();
+            }
+            else
+            {
+                foreach (Item item in connection.Items.ToList()) //iteration for every data in supplier
+                {
+                    if (item.Name.ToLower().Contains(Tbx_Search2.Text.ToLower()))
+                    {
+                        filterModelItem.Add(item);
+                    }
+                    else if (int.TryParse(Tbx_Search2.Text, out parsedValue)) // check if the textbox input is number only
+                    {
+                        if (item.Id.Equals(Convert.ToInt32(Tbx_Search2.Text)))
+                        {
+                            filterModelItem.Add(item);
+                        }
+                        else if (item.Price.Equals(Convert.ToInt32(Tbx_Search2.Text)))
+                        {
+                            filterModelItem.Add(item);
+                        }
+
+                        else if (item.Stock.Equals(Convert.ToInt32(Tbx_Search2.Text)))
+                        {
+                            filterModelItem.Add(item);
+                        }
+                    }
+                    else if (item.Supplier.Name.ToLower().Contains(Tbx_Search2.Text.ToLower()))
+                    {
+                        filterModelItem.Add(item);
+                    }
+                }
+                TB_M_Item.ItemsSource = filterModelItem.ToList();
+            }
+        }
+
     }
 }

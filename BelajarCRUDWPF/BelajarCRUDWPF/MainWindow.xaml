@@ -12,8 +12,8 @@
         <TabControl x:Name="Menu" HorizontalAlignment="Left" Height="473" Margin="0,-2,0,0" VerticalAlignment="Top" Width="794" TabStripPlacement="Left" SelectionChanged="Menu_SelectionChanged" BorderBrush="Gainsboro">
             <TabControl.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#00B55D"/>
-                    <GradientStop Color="#00B5B5" Offset="1"/>
+                    <GradientStop Color="GhostWhite"/>
+                    <GradientStop Color="GhostWhite" Offset="1"/>
                     <GradientStop Color="#005DB5" Offset="0.8"/>
                 </LinearGradientBrush>
             </TabControl.Background>
@@ -52,6 +52,11 @@
                     <Image Source="Images/mii.png" Width="70" Height="70" Margin="-75,85,49,323" />
                     <Button Name="LogOut" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="30" Margin="516,0,12,448" BorderBrush="{x:Null}" Click="LogOut_Click" Grid.Column="2">
                         <materialDesign:PackIcon Kind="Power" Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Button.ToolTip>
+                            <ToolTip>
+                                Log Out
+                            </ToolTip>
+                        </Button.ToolTip>
                         <Button.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="White"/>
@@ -62,6 +67,11 @@
                     </Button>
                     <Button Name="Refresh" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"  Grid.Column="2" Margin="318,180,200,258" BorderBrush="{x:Null}" Click="Refresh_Click">
                         <materialDesign:PackIcon Kind="Refresh" Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Button.ToolTip>
+                            <ToolTip>
+                                Refresh Form
+                            </ToolTip>
+                        </Button.ToolTip>
                         <Button.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="White"/>
@@ -74,7 +84,7 @@
                     <Label Content="Name" HorizontalAlignment="Left" Margin="25,70,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
                     <Label Content="Address" HorizontalAlignment="Left" Margin="25,120,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.1,3.577" Grid.ColumnSpan="2"/>
                     <Label Content="Email" HorizontalAlignment="Left" Margin="25,170,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.1,3.577" Grid.ColumnSpan="2"/>
-                    <DataGrid x:Name="TB_M_Supplier" HorizontalAlignment="Left" Height="222" Margin="-1,246,0,0" VerticalAlignment="Top" Width="719" SelectionChanged="TB_M_Supplier_SelectionChanged" AutoGenerateColumns="False" Grid.ColumnSpan="3">
+                    <DataGrid x:Name="TB_M_Supplier" HorizontalAlignment="Left" Height="222" Margin="-1,246,0,0" VerticalAlignment="Top" Width="719" SelectionChanged="TB_M_Supplier_SelectionChanged" AutoGenerateColumns="False" Grid.ColumnSpan="3" CanUserAddRows="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="80" />
                             <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="200">
@@ -97,6 +107,11 @@
                                     <DataTemplate>
                                         <Button x:Name="Btn_Delete" Click="Btn_Delete_Click">
                                             <materialDesign:PackIcon Kind="Delete"/>
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    Delete Data
+                                                </ToolTip>
+                                            </Button.ToolTip>
                                             <Button.Background>
                                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                                     <GradientStop Color="White"/>
@@ -119,6 +134,11 @@
                     </DataGrid>
                     <Button Name="Btn_Search" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="20" Height="20" Margin="338,58,200,400" Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_Search_Click"  Grid.Column="2" RenderTransformOrigin="-0.275,0.4">
                         <materialDesign:PackIcon Kind="Search" Width="20" Height="20"/>
+                        <Button.ToolTip>
+                            <ToolTip>
+                                Search Data
+                            </ToolTip>
+                        </Button.ToolTip>
                     </Button>
                     <TextBox x:Name="Tbx_Search" HorizontalAlignment="Left" Height="34" TextWrapping="Wrap" VerticalAlignment="Top" Width="141" Grid.Column="2" Margin="363,44,0,0" PreviewTextInput="Tbx_Search_PreviewTextInput"/>
                     <TextBox x:Name="Tbx_Id" HorizontalAlignment="Left" Height="30" Margin="58,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="290" PreviewTextInput="Tbx_Id_PreviewTextInput" IsEnabled="False" Grid.Column="1" Grid.ColumnSpan="2"/>
@@ -127,6 +147,11 @@
                     <TextBox x:Name="Tbx_Email" HorizontalAlignment="Left" Height="30" Margin="58,170,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="290" TextChanged="TextBox_TextChanged" PreviewTextInput="Tbx_Email_PreviewTextInput" Grid.Column="1" Grid.ColumnSpan="2"/>
                     <Button x:Name="Btn_Save"  HorizontalAlignment="Left" Margin="405,180,0,0" VerticalAlignment="Top" Width="99" Click="Btn_Save_Click" Height="40" Grid.Column="2">
                         <materialDesign:PackIcon Kind="ContentSave" Height="40" Width="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Button.ToolTip>
+                            <ToolTip>
+                                Insert or Update Data
+                            </ToolTip>
+                        </Button.ToolTip>
                         <Button.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="White"/>
@@ -142,6 +167,11 @@
                     <Image Source="Images/mii.png" Width="70" Height="70" Margin="-75,85,721,312" />
                     <Button Name="LogOut2" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="30" Margin="677,0,9,437" BorderBrush="{x:Null}" Click="LogOut2_Click">
                         <materialDesign:PackIcon Kind="Power" Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Button.ToolTip>
+                            <ToolTip>
+                                Log Out
+                            </ToolTip>
+                        </Button.ToolTip>
                         <Button.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="White"/>
@@ -152,6 +182,11 @@
                     </Button>
                     <Button Name="Refresh2" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Margin="478,180,198,247" BorderBrush="{x:Null}" Click="Refresh2_Click">
                         <materialDesign:PackIcon Kind="Refresh" Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Button.ToolTip>
+                            <ToolTip>
+                                Refresh Form
+                            </ToolTip>
+                        </Button.ToolTip>
                         <Button.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="White"/>
@@ -162,6 +197,11 @@
                     </Button>
                     <Button Name="Btn_Search2" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="20" Height="20" Margin="498,58,198,389" Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_Search2_Click">
                         <materialDesign:PackIcon Kind="Search" Width="20" Height="20"/>
+                        <Button.ToolTip>
+                            <ToolTip>
+                                Search Data
+                            </ToolTip>
+                        </Button.ToolTip>
                     </Button>
                     <TextBox x:Name="Tbx_Search2" HorizontalAlignment="Left" Height="34" TextWrapping="Wrap" VerticalAlignment="Top" Width="141" Margin="523,44,0,0" PreviewTextInput="Tbx_Search2_PreviewTextInput"/>
                     <Label Content="Id" HorizontalAlignment="Left" Margin="25,20,0,0" VerticalAlignment="Top" Height="30"/>
@@ -176,6 +216,11 @@
                     <ComboBox x:Name="Cb_Supplier" ItemsSource="{Binding Suppliers}" DisplayMemberPath="Name" SelectedValuePath="Id"  HorizontalAlignment="Left" Margin="120,175,0,0" VerticalAlignment="Top" Width="300" Height="30" SelectionChanged="Cb_Supplier_SelectionChanged"/>
                     <Button x:Name="Btn_Save_Item"  HorizontalAlignment="Left" Margin="565,180,0,0" VerticalAlignment="Top" Width="99" Click="Btn_Save_Item_Click" Height="40">
                         <materialDesign:PackIcon Kind="ContentSave" Height="40" Width="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Button.ToolTip>
+                            <ToolTip>
+                                Insert or Update Data
+                            </ToolTip>
+                        </Button.ToolTip>
                         <Button.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="White"/>
@@ -184,7 +229,7 @@
                             </LinearGradientBrush>
                         </Button.Background>
                     </Button>
-                    <DataGrid x:Name="TB_M_Item" HorizontalAlignment="Left" Height="222" Margin="-1,245,0,0" VerticalAlignment="Top" Width="716" SelectionChanged="TB_M_Item_SelectionChanged"  AutoGenerateColumns="False">
+                    <DataGrid x:Name="TB_M_Item" HorizontalAlignment="Left" Height="222" Margin="-1,245,0,0" VerticalAlignment="Top" Width="716" SelectionChanged="TB_M_Item_SelectionChanged"  AutoGenerateColumns="False" CanUserAddRows="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="80" />
                             <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="160">
@@ -208,6 +253,11 @@
                                     <DataTemplate>
                                         <Button x:Name="Btn_Delete_Item" Click="Btn_Delete_Item_Click">
                                             <materialDesign:PackIcon Kind="Delete"/>
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    Delete Data
+                                                </ToolTip>
+                                            </Button.ToolTip>
                                             <Button.Background>
                                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                                     <GradientStop Color="White"/>

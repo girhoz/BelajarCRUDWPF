@@ -127,7 +127,7 @@ namespace BelajarCRUDWPF
                 return; //nothing will happen
             }
             //Validation Character
-            else if (System.Text.RegularExpressions.Regex.IsMatch(Tbx_Email.Text, "[^a-zA-Z0-9@.]"))
+            else if (System.Text.RegularExpressions.Regex.IsMatch(Tbx_Email.Text, "[^a-zA-Z0-9@._]"))
             {
                 MessageBox.Show("Email format wrong!");
                 Tbx_Email.Focus();
